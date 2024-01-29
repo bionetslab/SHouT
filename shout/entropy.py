@@ -1,6 +1,9 @@
+from .utility import retrieve_extended_neighborhoods
+from scipy.stats import entropy
+import numpy as np
 
 
-def local_entropy(adata, cluster_key, radius):
+def local_entropy(adata, cluster_key, shortest_path_distances, radius, copy=False):
     """Computes local entropy scores.
 
     Parameters
@@ -13,10 +16,19 @@ def local_entropy(adata, cluster_key, radius):
     -------
 
     """
-    pass
+    extended_neighborhoods = retrieve_extended_neighborhoods(shortest_path_distances, radius)
+    local_entropies = np.zeros(len(extended_neighborhoods))
+    for cell, extended_neighborhood in extended_neighborhoods.items():
+        cell_type_map = adata[cluster_key].iloc[extended_neighborhood]
+        num_cells = len(cell_type_map)
+        cell_type_frequencies = (cell_type_map.value_counts() / num_cells).to_numpy()
+        local_entropies[cell] = entropy(cell_type_frequencies, base=2)
+    if copy:
+        return local_entropies
+    adata.obsm['local_entropy'] = local_entropies
 
 
-def global_entropy(adata, cluster_key):
+def global_entropy(adata, cluster_key, copy=False):
     """
 
     Parameters
@@ -28,35 +40,9 @@ def global_entropy(adata, cluster_key):
     -------
 
     """
-    pass
-
-
-def _compute_local_cell_type_frequencies(adata, cluster_key, radius):
-    """
-
-    Parameters
-    ----------
-    adata :
-    cluster_key :
-    radius :
-
-    Returns
-    -------
-    Array with local cell type frequencies for all cells (cells are rows, cell types are columns).
-
-    """
-
-
-def _compute_global_cell_type_frequencies(adata, cluster_key):
-    """
-
-    Parameters
-    ----------
-    adata :
-    cluster_key :
-
-    Returns
-    -------
-    Dictionary with cell types as key and frequencies as values.
-
-    """
+    cell_type_map = adata[cluster_key]
+    num_cells = len(cell_type_map)
+    cell_type_frequencies = (cell_type_map.value_counts() / num_cells).to_numpy()
+    if copy:
+        return entropy(cell_type_frequencies, base=2)
+    adata.uns['global_entropy'] = entropy(cell_type_frequencies, base=2)
