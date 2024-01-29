@@ -1,6 +1,7 @@
 from .utility import retrieve_extended_neighborhoods
 import numpy as np
 
+
 def global_homophily(adata, adj_matrix, adj_matrix_homophilic, copy=False):
     """
 
@@ -41,5 +42,5 @@ def local_homophily(adata, shortest_path_distances, radius, adj_matrix, adj_matr
         sub_adj_matrix_homophilic = adj_matrix_homophilic[np.ix_([extended_neighborhood], [extended_neighborhood])]
         local_homophilies[cell] = sub_adj_matrix_homophilic.sum() / sub_adj_matrix.sum()
     if copy:
-       return local_homophilies
+        return local_homophilies
     adata.obsm['local_homophily'] = local_homophilies
