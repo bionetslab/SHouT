@@ -17,7 +17,7 @@ def global_entropy(adata, cluster_key, normalize=True, copy=False):
     -------
 
     """
-    cell_type_map = adata[cluster_key]
+    cell_type_map = adata.obs[cluster_key]
     normalization_constant = np.log2(cell_type_map.nunique()) if normalize else 1
     num_cells = len(cell_type_map)
     cell_type_frequencies = (cell_type_map.value_counts() / num_cells).to_numpy()
@@ -50,7 +50,7 @@ def local_entropy(adata, cluster_key, radius, normalize=True, coord_type='generi
     if extended_neighborhoods is None:
         extended_neighborhoods = get_extended_neighborhoods(shortest_path_distances, radius)
     local_entropies = np.zeros(len(extended_neighborhoods))
-    cell_type_map = adata[cluster_key]
+    cell_type_map = adata.obs[cluster_key]
     normalization_constant = np.log2(cell_type_map.nunique()) if normalize else 1
     for cell, extended_neighborhood in extended_neighborhoods.items():
         local_cell_type_map = cell_type_map.iloc[extended_neighborhood]
@@ -59,5 +59,5 @@ def local_entropy(adata, cluster_key, radius, normalize=True, coord_type='generi
         local_entropies[cell] = entropy(cell_type_frequencies, base=2) / normalization_constant
     if copy:
         return local_entropies
-    adata.obsm[f'local_entropy_{radius}'] = local_entropies
+    adata.obs[f'local_entropy_{radius}'] = local_entropies
 

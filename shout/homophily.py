@@ -57,10 +57,14 @@ def local_homophily(adata, cluster_key, radius, coord_type='generic', copy=False
     for cell, extended_neighborhood in extended_neighborhoods.items():
         sub_adj_matrix = adj_matrix[np.ix_(extended_neighborhood, extended_neighborhood)]
         sub_adj_matrix_homophilic = adj_matrix_homophilic[np.ix_(extended_neighborhood, extended_neighborhood)]
-        local_homophilies[cell] = sub_adj_matrix_homophilic.sum() / sub_adj_matrix.sum()
+        sum_of_degrees = sub_adj_matrix.sum()
+        if sum_of_degrees == 0:
+            local_homophilies[cell] = 0
+        else:
+            local_homophilies[cell] = sub_adj_matrix_homophilic.sum() / sum_of_degrees
     if copy:
         return local_homophilies
-    adata.obsm[f'local_homophily_{radius}'] = local_homophilies
+    adata.obs[f'local_homophily_{radius}'] = local_homophilies
 
 
 def get_homophilic_edges(adata, cluster_key, adj_matrix):

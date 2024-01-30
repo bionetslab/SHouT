@@ -1,6 +1,7 @@
 from .entropy import *
 from .homophily import *
 from .egophily import *
+from .utility import *
 
 
 def all_scores(adata, cluster_key, radius, normalize=True, coord_type='generic', copy=False):
@@ -24,9 +25,9 @@ def all_scores(adata, cluster_key, radius, normalize=True, coord_type='generic',
     adj_matrix_homophilic = get_homophilic_edges(adata, cluster_key, adj_matrix)
     scores = dict()
     scores['global_entropy'] = global_entropy(adata, cluster_key, normalize=normalize, copy=copy)
-    scores[f'local_entropy_radius'] = local_entropy(adata, cluster_key, radius, normalize=normalize, copy=copy,
-                                                    shortest_path_distances=shortest_path_distances,
-                                                    extended_neighborhoods=extended_neighborhoods)
+    scores[f'local_entropy_{radius}'] = local_entropy(adata, cluster_key, radius, normalize=normalize, copy=copy,
+                                                      shortest_path_distances=shortest_path_distances,
+                                                      extended_neighborhoods=extended_neighborhoods)
     scores['global_homophily'] = global_homophily(adata, cluster_key, coord_type=coord_type, copy=copy,
                                                   adj_matrix=adj_matrix, adj_matrix_homophilic=adj_matrix_homophilic)
     scores[f'local_homophily_{radius}'] = local_homophily(adata, cluster_key, radius, coord_type=coord_type, copy=copy,
