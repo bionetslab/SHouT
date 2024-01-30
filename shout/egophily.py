@@ -1,8 +1,9 @@
-from .utility import retrieve_extended_neighborhoods
+from .utility import *
 import numpy as np
 
 
-def egophily(adata, cluster_key, shortest_path_distances, radius, copy=False):
+def egophily(adata, cluster_key, radius, coord_type='generic', copy=False, shortest_path_distances=None,
+             extended_neighborhoods=None):
     """
 
     Parameters
@@ -10,12 +11,19 @@ def egophily(adata, cluster_key, shortest_path_distances, radius, copy=False):
     adata :
     cluster_key :
     radius :
+    coord_type :
+    copy :
+    shortest_path_distances :
+    extended_neighborhoods :
 
     Returns
     -------
 
     """
-    extended_neighborhoods = retrieve_extended_neighborhoods(shortest_path_distances, radius)
+    if shortest_path_distances is None:
+        _, shortest_path_distances = get_spatial_graph(adata, coord_type)
+    if extended_neighborhoods is None:
+        extended_neighborhoods = get_extended_neighborhoods(shortest_path_distances, radius)
     egophilies = np.zeros(len(extended_neighborhoods))
     for cell, extended_neighborhood in extended_neighborhoods.items():
         type_of_cell = adata[cluster_key].iloc[cell]
@@ -25,4 +33,4 @@ def egophily(adata, cluster_key, shortest_path_distances, radius, copy=False):
         egophilies[cell] = num_cells_of_same_type / num_cells
     if copy:
         return egophilies
-    adata.obsm['egophily'] = egophilies
+    adata.obsm[f'egophily_{radius}'] = egophilies

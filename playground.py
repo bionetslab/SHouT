@@ -21,9 +21,9 @@ with open(adata_pickle_path, 'rb') as f:
 # ---
 adata=pickle_[81]
 # ---
-adj_matrix, adj_matrix_homophilic, shortest_path_distances=utility.compute_spatial_graph(adata, 'celltype', 'generic')
+adj_matrix, adj_matrix_homophilic, shortest_path_distances=utility.get_spatial_graph(adata, 'celltype', 'generic')
 radius=2
-extended_neighborhoods=utility.retrieve_extended_neighborhoods(shortest_path_distances, radius)
+extended_neighborhoods=utility.get_extended_neighborhoods(shortest_path_distances, radius)
 # ---
 
 # ===== Global homophily =====

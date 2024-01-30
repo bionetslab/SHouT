@@ -1,48 +1,63 @@
-from .utility import retrieve_extended_neighborhoods
+from .utility import *
 from scipy.stats import entropy
 import numpy as np
 
 
-def local_entropy(adata, cluster_key, shortest_path_distances, radius, copy=False):
-    """Computes local entropy scores.
-
-    Parameters
-    ----------
-    adata : Annotated data object with spatial graph already computed.
-    cluster_key : Key of column specifying cell types, states, or clusters.
-    radius : Radius to be considered.
-
-    Returns
-    -------
-
-    """
-    extended_neighborhoods = retrieve_extended_neighborhoods(shortest_path_distances, radius)
-    local_entropies = np.zeros(len(extended_neighborhoods))
-    for cell, extended_neighborhood in extended_neighborhoods.items():
-        cell_type_map = adata[cluster_key].iloc[extended_neighborhood]
-        num_cells = len(cell_type_map)
-        cell_type_frequencies = (cell_type_map.value_counts() / num_cells).to_numpy()
-        local_entropies[cell] = entropy(cell_type_frequencies, base=2)
-    if copy:
-        return local_entropies
-    adata.obsm['local_entropy'] = local_entropies
-
-
-def global_entropy(adata, cluster_key, copy=False):
+def global_entropy(adata, cluster_key, normalize=True, copy=False):
     """
 
     Parameters
     ----------
     adata :
     cluster_key :
+    normalize :
+    copy :
 
     Returns
     -------
 
     """
     cell_type_map = adata[cluster_key]
+    normalization_constant = np.log2(cell_type_map.nunique()) if normalize else 1
     num_cells = len(cell_type_map)
     cell_type_frequencies = (cell_type_map.value_counts() / num_cells).to_numpy()
     if copy:
-        return entropy(cell_type_frequencies, base=2)
-    adata.uns['global_entropy'] = entropy(cell_type_frequencies, base=2)
+        return entropy(cell_type_frequencies, base=2) / normalization_constant
+    adata.uns['global_entropy'] = entropy(cell_type_frequencies, base=2) / normalization_constant
+
+
+def local_entropy(adata, cluster_key, radius, normalize=True, coord_type='generic', copy=False,
+                  shortest_path_distances=None, extended_neighborhoods=None):
+    """
+
+    Parameters
+    ----------
+    adata :
+    cluster_key :
+    radius :
+    normalize :
+    coord_type :
+    copy :
+    shortest_path_distances :
+    extended_neighborhoods :
+
+    Returns
+    -------
+
+    """
+    if shortest_path_distances is None:
+        _, shortest_path_distances = get_spatial_graph(adata, coord_type)
+    if extended_neighborhoods is None:
+        extended_neighborhoods = get_extended_neighborhoods(shortest_path_distances, radius)
+    local_entropies = np.zeros(len(extended_neighborhoods))
+    cell_type_map = adata[cluster_key]
+    normalization_constant = np.log2(cell_type_map.nunique()) if normalize else 1
+    for cell, extended_neighborhood in extended_neighborhoods.items():
+        local_cell_type_map = cell_type_map.iloc[extended_neighborhood]
+        num_cells = len(local_cell_type_map)
+        cell_type_frequencies = (local_cell_type_map.value_counts() / num_cells).to_numpy()
+        local_entropies[cell] = entropy(cell_type_frequencies, base=2) / normalization_constant
+    if copy:
+        return local_entropies
+    adata.obsm[f'local_entropy_{radius}'] = local_entropies
+
