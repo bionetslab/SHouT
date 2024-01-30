@@ -38,8 +38,10 @@ def local_homophily(adata, shortest_path_distances, radius, adj_matrix, adj_matr
     extended_neighborhoods = retrieve_extended_neighborhoods(shortest_path_distances, radius)
     local_homophilies = np.zeros(len(extended_neighborhoods))
     for cell, extended_neighborhood in extended_neighborhoods.items():
-        sub_adj_matrix = adj_matrix[np.ix_([extended_neighborhood], [extended_neighborhood])]
-        sub_adj_matrix_homophilic = adj_matrix_homophilic[np.ix_([extended_neighborhood], [extended_neighborhood])]
+        # sub_adj_matrix = adj_matrix[np.ix_([extended_neighborhood], [extended_neighborhood])]
+        # sub_adj_matrix_homophilic = adj_matrix_homophilic[np.ix_([extended_neighborhood], [extended_neighborhood])]
+        sub_adj_matrix = adj_matrix[np.ix_(extended_neighborhood, extended_neighborhood)]
+        sub_adj_matrix_homophilic = adj_matrix_homophilic[np.ix_(extended_neighborhood, extended_neighborhood)]
         local_homophilies[cell] = sub_adj_matrix_homophilic.sum() / sub_adj_matrix.sum()
     if copy:
         return local_homophilies

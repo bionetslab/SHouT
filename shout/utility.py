@@ -18,7 +18,8 @@ def compute_spatial_graph(adata, cluster_key, coord_type='generic'):
     """
     adj_matrix, _ = spatial_neighbors(adata, delaunay=True, coord_type=coord_type, copy = True)
     shortest_path_distances = shortest_path(adj_matrix)
-    adj_matrix_homophilic = csr_matrix(adj_matrix)
+    # adj_matrix_homophilic = csr_matrix(adj_matrix)
+    adj_matrix_homophilic=adj_matrix.copy()
     support_adj_matrix = adj_matrix.nonzero()
     for edge in zip(support_adj_matrix[0], support_adj_matrix[1]):
         if adata.obs[cluster_key].iloc[edge[0]] != adata.obs[cluster_key].iloc[edge[1]]:
