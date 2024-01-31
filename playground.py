@@ -1,11 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Mon Jan 29 20:14:14 2024
-
-@author: surya
-"""
-
 import squidpy as sq
 import numpy as np
 from scipy.sparse.csgraph import shortest_path
@@ -33,5 +25,4 @@ homophily.global_homophily(adata, adj_matrix, adj_matrix_homophilic)
 homophily.local_homophily(adata, shortest_path_distances, radius, adj_matrix, adj_matrix_homophilic)
 
 # =============================================
-
 
