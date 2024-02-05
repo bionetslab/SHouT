@@ -3,7 +3,7 @@ from scipy.stats import entropy
 import numpy as np
 
 
-def global_entropy(adata, cluster_key, normalize=True, copy=False):
+def global_entropy(adata, cluster_key, normalize=True, num_cell_types=None, copy=False):
     """
 
     Parameters
@@ -11,6 +11,7 @@ def global_entropy(adata, cluster_key, normalize=True, copy=False):
     adata :
     cluster_key :
     normalize :
+    num_cell_types :
     copy :
 
     Returns
@@ -18,7 +19,9 @@ def global_entropy(adata, cluster_key, normalize=True, copy=False):
 
     """
     cell_type_map = adata.obs[cluster_key]
-    normalization_constant = np.log2(cell_type_map.nunique()) if normalize else 1
+    if num_cell_types is None:
+        num_cell_types = cell_type_map.nunique()
+    normalization_constant = np.log2(num_cell_types) if normalize else 1
     num_cells = len(cell_type_map)
     cell_type_frequencies = (cell_type_map.value_counts() / num_cells).to_numpy()
     if copy:
@@ -26,7 +29,7 @@ def global_entropy(adata, cluster_key, normalize=True, copy=False):
     adata.uns['global_entropy'] = entropy(cell_type_frequencies, base=2) / normalization_constant
 
 
-def local_entropy(adata, cluster_key, radius, normalize=True, coord_type='generic', copy=False,
+def local_entropy(adata, cluster_key, radius, normalize=True, num_cell_types=None, coord_type='generic', copy=False,
                   shortest_path_distances=None, extended_neighborhoods=None):
     """
 
@@ -51,7 +54,9 @@ def local_entropy(adata, cluster_key, radius, normalize=True, coord_type='generi
         extended_neighborhoods = get_extended_neighborhoods(shortest_path_distances, radius)
     local_entropies = np.zeros(len(extended_neighborhoods))
     cell_type_map = adata.obs[cluster_key]
-    normalization_constant = np.log2(cell_type_map.nunique()) if normalize else 1
+    if num_cell_types is None:
+        num_cell_types = cell_type_map.nunique()
+    normalization_constant = np.log2(num_cell_type) if normalize else 1
     for cell, extended_neighborhood in extended_neighborhoods.items():
         local_cell_type_map = cell_type_map.iloc[extended_neighborhood]
         num_cells = len(local_cell_type_map)
