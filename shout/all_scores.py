@@ -29,14 +29,14 @@ def all_scores(adata, cluster_key, radii, normalize=True, num_cell_types=None, c
                                                   adj_matrix=adj_matrix, adj_matrix_homophilic=adj_matrix_homophilic)
     for radius in radii:
         extended_neighborhoods = get_extended_neighborhoods(shortest_path_distances, radius)
-        scores[f'local_entropy_{radius}'] = local_entropy(adata, cluster_key, radius, normalize=normalize, num_cell_types=num_cell_types, 
+        scores[f'local_entropy_{radius}', f'local_entropy_{radius}_TIME'] = local_entropy(adata, cluster_key, radius, normalize=normalize, num_cell_types=num_cell_types, 
                                                           copy=copy, shortest_path_distances=shortest_path_distances,
                                                           extended_neighborhoods=extended_neighborhoods)
-        scores[f'local_homophily_{radius}'] = local_homophily(adata, cluster_key, radius, coord_type=coord_type, copy=copy,
+        scores[f'local_homophily_{radius}', f'local_homophily_{radius}_TIME'] = local_homophily(adata, cluster_key, radius, coord_type=coord_type, copy=copy,
                                                               adj_matrix=adj_matrix,
                                                               adj_matrix_homophilic=adj_matrix_homophilic,
                                                               extended_neighborhoods=extended_neighborhoods)
-        scores[f'egophily_{radius}'] = egophily(adata, cluster_key, radius, coord_type=coord_type, copy=copy,
+        scores[f'egophily_{radius}', f'egophily_{radius}_TIME'] = egophily(adata, cluster_key, radius, coord_type=coord_type, copy=copy,
                                                 shortest_path_distances=shortest_path_distances,
                                                 extended_neighborhoods=extended_neighborhoods)
     if copy:

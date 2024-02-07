@@ -1,5 +1,6 @@
 from .utility import *
 import numpy as np
+import time
 
 
 def egophily(adata, cluster_key, radius, coord_type='generic', copy=False, shortest_path_distances=None,
@@ -20,6 +21,7 @@ def egophily(adata, cluster_key, radius, coord_type='generic', copy=False, short
     -------
 
     """
+    start=time.time()
     if shortest_path_distances is None:
         _, shortest_path_distances = get_spatial_graph(adata, coord_type)
     if extended_neighborhoods is None:
@@ -32,6 +34,9 @@ def egophily(adata, cluster_key, radius, coord_type='generic', copy=False, short
         num_cells = len(local_cell_type_map)
         num_cells_of_same_type = local_cell_type_map.value_counts().loc[type_of_cell]
         egophilies[cell] = num_cells_of_same_type / num_cells
+    end=time.time()
+    time_elapsed=end-start
     if copy:
-        return egophilies
+        return egophilies, time_elapsed
     adata.obs[f'egophily_{radius}'] = egophilies
+    adata.uns[f'egophily_{radius}_TIME'] = egophilies
