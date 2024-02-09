@@ -19,19 +19,15 @@ def global_entropy(adata, cluster_key, normalize=True, num_cell_types=None, copy
     -------
 
     """
-    start = time.time()
     cell_type_map = adata.obs[cluster_key]
     if num_cell_types is None:
         num_cell_types = cell_type_map.nunique()
     normalization_constant = np.log2(num_cell_types) if normalize else 1
     num_cells = len(cell_type_map)
     cell_type_frequencies = (cell_type_map.value_counts() / num_cells).to_numpy()
-    end=time.time()
-    time_elapsed=end-start
     if copy:
         return entropy(cell_type_frequencies, base=2) / normalization_constant, time_elapsed
     adata.uns['global_entropy'] = entropy(cell_type_frequencies, base=2) / normalization_constant
-    adata.uns['global_entropy_TIME'] = time_elapsed
 
 
 def local_entropy(adata, cluster_key, radius, normalize=True, num_cell_types=None, coord_type='generic', copy=False,
@@ -53,7 +49,6 @@ def local_entropy(adata, cluster_key, radius, normalize=True, num_cell_types=Non
     -------
 
     """
-    start = time.time()
     if shortest_path_distances is None:
         _, shortest_path_distances = get_spatial_graph(adata, coord_type)
     if extended_neighborhoods is None:
@@ -68,10 +63,7 @@ def local_entropy(adata, cluster_key, radius, normalize=True, num_cell_types=Non
         num_cells = len(local_cell_type_map)
         cell_type_frequencies = (local_cell_type_map.value_counts() / num_cells).to_numpy()
         local_entropies[cell] = entropy(cell_type_frequencies, base=2) / normalization_constant
-    end=time.time()
-    time_elapsed=end-start
     if copy:
         return local_entropies, time_elapsed
     adata.obs[f'local_entropy_{radius}'] = local_entropies
-    adata.uns[f'local_entropy_{radius}_TIME'] = time_elapsed
 
