@@ -26,7 +26,7 @@ def global_entropy(adata, cluster_key, normalize=True, num_cell_types=None, copy
     num_cells = len(cell_type_map)
     cell_type_frequencies = (cell_type_map.value_counts() / num_cells).to_numpy()
     if copy:
-        return entropy(cell_type_frequencies, base=2) / normalization_constant, time_elapsed
+        return entropy(cell_type_frequencies, base=2) / normalization_constant
     adata.uns['global_entropy'] = entropy(cell_type_frequencies, base=2) / normalization_constant
 
 
@@ -64,6 +64,6 @@ def local_entropy(adata, cluster_key, radius, normalize=True, num_cell_types=Non
         cell_type_frequencies = (local_cell_type_map.value_counts() / num_cells).to_numpy()
         local_entropies[cell] = entropy(cell_type_frequencies, base=2) / normalization_constant
     if copy:
-        return local_entropies, time_elapsed
+        return local_entropies
     adata.obs[f'local_entropy_{radius}'] = local_entropies
 

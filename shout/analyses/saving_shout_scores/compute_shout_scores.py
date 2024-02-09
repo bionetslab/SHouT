@@ -1,5 +1,7 @@
 import run_shout
 import argparse
+import pickle
+import pandas as pd
 
 def validate_list_of_radii(str_):
     radii_=[]
@@ -39,7 +41,12 @@ def _get_parser():
     parser.add_argument('--copy', type=bool, default=False, help='Optionally specify whether heterogenety scores to be written in anndata object (copy=False), or in a csv (copy=True). Default is copy=False.')
     return parser
 
-
+def save_het_scores_and_times_as_csv(Het_scores, time_elapsed):
+    for i in Het_scores:
+        df=pd.DataFrame(Het_scores[i])
+        df['overall_time_taken_allHetScores']=time_elapsed[i]
+        df.to_csv(f'{i}.csv')
+        
 
 
 if __name__ == '__main__':
@@ -49,7 +56,12 @@ if __name__ == '__main__':
     else:
         print(args.radii)
         radii=(args.radii).copy()
-    run_shout.run(args.adata_path, args.cluster_key, radii, args.normalize, args.num_cell_types, args.coord_type, args.copy)
+    patients_good, patients_bad, Het_scores, time_elapsed=run_shout.run(args.adata_path, args.cluster_key, radii, args.normalize, args.num_cell_types, args.coord_type, args.copy)
+    # ---
+    if args.copy==True:
+        save_het_scores_and_times_as_csv(Het_scores, time_elapsed)
+    # ---
+    print('Heterogeneity scores saved successfully!')
 
 
 

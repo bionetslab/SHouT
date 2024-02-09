@@ -24,7 +24,7 @@ def global_homophily(adata, cluster_key, coord_type='generic', copy=False, adj_m
     if adj_matrix_homophilic is None:
         adj_matrix_homophilic = get_homophilic_edges(adata, cluster_key, adj_matrix)
     if copy:
-        return adj_matrix_homophilic.sum() / adj_matrix.sum(), time_elapsed
+        return adj_matrix_homophilic.sum() / adj_matrix.sum()
     adata.uns['global_homophily'] = adj_matrix_homophilic.sum() / adj_matrix.sum()
 
 
@@ -64,7 +64,7 @@ def local_homophily(adata, cluster_key, radius, coord_type='generic', copy=False
         else:
             local_homophilies[cell] = sub_adj_matrix_homophilic.sum() / sum_of_degrees
     if copy:
-        return local_homophilies, time_elapsed
+        return local_homophilies
     adata.obs[f'local_homophily_{radius}'] = local_homophilies
 
 

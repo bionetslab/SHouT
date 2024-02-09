@@ -18,58 +18,50 @@ def read_h5ad_to_pkl(adata_path):
             continue
     return Pkl
 
-def compute_heterogeneity_scores_without_copy(Pkl, cluster_key, radii, copy):
+def compute_heterogeneity_scores(Pkl, cluster_key, radii, copy):
     patients_good=[]
     patients_bad=[]
+    Het_scores={}
+    Times={}
     for i in Pkl:
         adata=Pkl[i]
+        start = time.time()
+        # ---
         try:
-            start = time.time()
-            all_scores(adata, cluster_key=cluster_key, radii=radii, copy=copy)
-            end = time.time()
-            adata.uns['SHouT_execution_time']=end-start
-            # ---
-            _str_=str(i)+'.h5ad'
-            adata.write_h5ad(
-            _str_,
-            # compression=hdf5plugin.FILTERS["zstd"]
-            compression="gzip"
-            )
-            # ---
+            if copy==False:
+                all_scores(adata, cluster_key=cluster_key, radii=radii, copy=copy)
+                end = time.time()
+                adata.uns['SHouT_execution_time']=end-start
+            else:
+                het_scores=all_scores(adata, cluster_key=cluster_key, radii=radii, copy=copy)
+                Het_scores[i]=het_scores
+                end = time.time()
+                time_elapsed=end-start
+                Times[i]=time_elapsed
             print(f'Patient# {i}: Computing local heterogeneity scores...')
             patients_good.append(i)
         except:
             print(f'Patient# {i}: Not enough cells in image to generate spatial neighbors graph.')
             patients_bad.append(i)
-    return patients_good, patients_bad
-
-def compute_heterogeneity_scores_with_copy(Pkl, cluster_key, radii, copy):
-    patients_good=[]
-    patients_bad=[]
-    for i in Pkl:
-        adata=Pkl[i]
-        # # --------------------------
-        # het_scores=all_scores(adata, cluster_key=cluster_key, radii=radii, copy=copy)
-        # # ---
-        # print('Patient#: '+str(i))
-        # patients_good.append(i)
-        # # --------------------------
-        try:
-            het_scores=all_scores(adata, cluster_key=cluster_key, radii=radii, copy=copy)
-            # ---
-            print(f'Patient# {i}: Computing local heterogeneity scores...')
-            patients_good.append(i)
-        except:
-            print(f'Patient# {i}: Not enough cells in image to generate spatial neighbors graph.')
-            patients_bad.append(i)
-    return patients_good, patients_bad
+            continue
+        # ---
+        
+        
+        # ---
+        _str_=str(i)+'.h5ad'
+        adata.write_h5ad(
+        _str_,
+        # compression=hdf5plugin.FILTERS["zstd"]
+        compression="gzip"
+        )
+        # ---
+    if copy==False:
+        return patients_good, patients_bad, None, None
+    else:
+        return patients_good, patients_bad, Het_scores, Times
 
 def run(adata_path, cluster_key, radii, normalize, num_cell_types, coord_type, copy):
     Pkl=read_h5ad_to_pkl(adata_path) # Read .h5ad files, and save as dict.
-    if copy==False:
-        patients_good, patients_bad=compute_heterogeneity_scores_without_copy(Pkl, cluster_key, radii, copy)
-    else:
-        patients_good, patients_bad, het_scores=compute_heterogeneity_scores_with_copy(Pkl, cluster_key, radii, copy)
-    
-    
+    patients_good, patients_bad, het_scores, time_elapsed=compute_heterogeneity_scores(Pkl, cluster_key, radii, copy)
+    return patients_good, patients_bad, het_scores, time_elapsed  
     
