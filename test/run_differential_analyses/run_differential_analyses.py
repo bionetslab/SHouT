@@ -43,7 +43,8 @@ def plots_across_all_celltypes(DF, conditions_, mwu_pvals_per_celltype, mwu_pval
         sns.set(font_scale = 1.2)
         sns.set_style("white")
         args = dict(x=var_name, y=value_name, data=data, hue="Group", hue_order=list(conditions_), order=local_heterogeneity_measure)
-        ax = sns.boxplot(**args)
+        # ax = sns.boxplot(**args)
+        ax = sns.violinplot(**args)
             
         if heterogeneity_measure=='entropy':
             ax.axhline(y=np.mean(DF.global_entropy), color='red')
@@ -104,7 +105,8 @@ def plots_per_celltype(DF, conditions_, celltypes_, mwu_pvals_per_celltype, mwu_
             sns.set(font_scale = 1.2)
             sns.set_style("white")
             args = dict(x=var_name, y=value_name, data=data, hue="Group", hue_order=list(conditions_), order=local_heterogeneity_measure)
-            ax = sns.boxplot(**args)
+            # ax = sns.boxplot(**args)
+            ax = sns.violinplot(**args)
             
             if heterogeneity_measure=='entropy':
                 ax.axhline(y=np.mean(DF.global_entropy), color='red')
