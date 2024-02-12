@@ -1,6 +1,5 @@
 import run_shout
 import argparse
-import pickle
 import pandas as pd
 
 def _get_parser():
@@ -20,7 +19,6 @@ def save_het_scores_and_times_as_csv(het_scores, time_elapsed):
         df['overall_time_taken_allHetScores']=time_elapsed[i]
         df.to_csv(f'{i}.csv')
         
-
 
 if __name__ == '__main__':
     args = _get_parser().parse_args()

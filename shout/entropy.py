@@ -1,7 +1,7 @@
 from .utility import *
 from scipy.stats import entropy
 import numpy as np
-import time
+from scipy.sparse.csgraph import shortest_path
 
 
 def global_entropy(adata, cluster_key, normalize=True, num_cell_types=None, copy=False):
@@ -50,7 +50,8 @@ def local_entropy(adata, cluster_key, radius, normalize=True, num_cell_types=Non
 
     """
     if shortest_path_distances is None:
-        _, shortest_path_distances = get_spatial_graph(adata, coord_type)
+        adj_matrix = get_spatial_graph(adata, coord_type)
+        shortest_path_distances = shortest_path(adj_matrix)
     if extended_neighborhoods is None:
         extended_neighborhoods = get_extended_neighborhoods(shortest_path_distances, radius)
     local_entropies = np.zeros(len(extended_neighborhoods))

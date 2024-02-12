@@ -1,7 +1,6 @@
 import run_differential_analyses
 import argparse
-import pickle
-import pandas as pd
+
 
 def _get_parser():
     parser = argparse.ArgumentParser()

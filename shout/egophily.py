@@ -1,6 +1,6 @@
 from .utility import *
 import numpy as np
-import time
+from scipy.sparse.csgraph import shortest_path
 
 
 def egophily(adata, cluster_key, radius, coord_type='generic', copy=False, shortest_path_distances=None,
@@ -22,7 +22,8 @@ def egophily(adata, cluster_key, radius, coord_type='generic', copy=False, short
 
     """
     if shortest_path_distances is None:
-        _, shortest_path_distances = get_spatial_graph(adata, coord_type)
+        adj_matrix = get_spatial_graph(adata, coord_type)
+        shortest_path_distances = shortest_path(adj_matrix)
     if extended_neighborhoods is None:
         extended_neighborhoods = get_extended_neighborhoods(shortest_path_distances, radius)
     egophilies = np.zeros(len(extended_neighborhoods))

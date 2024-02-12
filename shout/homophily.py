@@ -1,6 +1,6 @@
 from .utility import *
 import numpy as np
-import time
+from scipy.sparse.csgraph import shortest_path
 
 
 def global_homophily(adata, cluster_key, coord_type='generic', copy=False, adj_matrix=None, adj_matrix_homophilic=None):
@@ -48,8 +48,10 @@ def local_homophily(adata, cluster_key, radius, coord_type='generic', copy=False
     -------
 
     """
-    if shortest_path_distances is None or adj_matrix is None:
-        shortest_path_distances, adj_matrix = get_spatial_graph(adata, coord_type)
+    if adj_matrix is None:
+        adj_matrix = get_spatial_graph(adata, coord_type)
+    if shortest_path_distances is None:
+        shortest_path_distances = shortest_path(adj_matrix)
     if adj_matrix_homophilic is None:
         adj_matrix_homophilic = get_homophilic_edges(adata, cluster_key, adj_matrix)
     if extended_neighborhoods is None:
