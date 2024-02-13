@@ -150,12 +150,12 @@ def mwu_computation(DF, celltypes_, conditions_, condition_celltype_DF_dict, con
                                   'local_homophily_1','local_homophily_2','local_homophily_3','local_homophily_4','local_homophily_5',
                                   'egophily_1','egophily_2', 'egophily_3', 'egophily_4', 'egophily_5']
     condition_combinations=list(itertools.combinations(conditions_, 2))
+    
     # ======================== p-values across all celltypes: ===============================
     mwu_pvals_all_celltypes={}
     mwu_pvals_all_celltypes_insignificant_index=[]
     for i1, i2 in condition_combinations:
         mwu_pvals_all_celltypes[(i1, i2)]={}
-        
         for k in local_heterogeneity_measures:
             print('i1, i2:'+str(i1)+str(', ')+str(i2)+'k:'+str(k))
             l1=list(DF[DF['Group']==i1][k])
@@ -168,7 +168,6 @@ def mwu_computation(DF, celltypes_, conditions_, condition_celltype_DF_dict, con
                 mwu_pvals_all_celltypes_insignificant_index.append([(i1, i2), k])
     
     # ======================= p-values across individual celltypes: ================================
-    
     mwu_pvals_per_celltype={}
     mwu_pvals_per_celltype_insignificant_index=[]
     for j in celltypes_:
