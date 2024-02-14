@@ -60,8 +60,8 @@ if __name__ == '__main__':
             fig, axes = plt.subplots(figsize=(20,10))
             sns.set(font_scale = 1.2)
             sns.set_style("white")
-            ax = sns.boxplot(**args)
-            # ax = sns.violinplot(**args, cut=0)
+            # ax = sns.boxplot(**args)
+            ax = sns.violinplot(**args, cut=0)
             annot = Annotator(ax, pairs, **args)
             annot.set_custom_annotations(pvals)
             annot.annotate()
@@ -77,8 +77,8 @@ if __name__ == '__main__':
             fig, axes = plt.subplots(figsize=(20,10))
             sns.set(font_scale = 1.2)
             sns.set_style("white")
-            ax = sns.boxplot(**args)
-            # ax = sns.violinplot(**args, cut=0)
+            # ax = sns.boxplot(**args)
+            ax = sns.violinplot(**args, cut=0)
             
             text = "$X$: non-significant"
             txt=plt.text(.885, .7, text, ha='left', va='top', transform=plt.gcf().transFigure, fontsize=22, bbox=dict(boxstyle='square', fc='0.9', ec='0.9'))
