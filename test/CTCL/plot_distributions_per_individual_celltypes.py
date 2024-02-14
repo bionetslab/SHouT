@@ -96,7 +96,6 @@ if __name__ == '__main__':
             plt.xlabel('radius', fontsize=25, labelpad=20)
             plt.ylabel(f'{heterogeneity_measure} score', fontsize=25, labelpad=20)
             plt.title(f'Local {heterogeneity_measure} ({i})', fontsize=25, pad=20)
-            plt.savefig(f'{i}_{heterogeneity_measure}_with_varying_radius.jpg', format='jpg', bbox_inches='tight')
             
             plt.legend(title='Condition', bbox_to_anchor=(1.05, 1), loc='upper left', borderaxespad=0)
             plt.setp(ax.get_legend().get_texts(), fontsize='25') # for legend text
@@ -108,6 +107,7 @@ if __name__ == '__main__':
             for j in ax.get_yticks():
                 xticks.append(round(j,1))
             ax.set_yticklabels(xticks, size = 20)
+            plt.savefig(f'{i}_{heterogeneity_measure}_with_varying_radius.jpg', format='jpg', bbox_inches='tight')
             fig.tight_layout()
             plt.show()
     

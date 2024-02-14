@@ -59,8 +59,8 @@ if __name__ == '__main__':
         fig, axes = plt.subplots(figsize=(20,10))
         sns.set(font_scale = 1.2)
         sns.set_style("white")
-        ax = sns.boxplot(**args)
-        # ax = sns.violinplot(**args, cut=0)
+        # ax = sns.boxplot(**args)
+        ax = sns.violinplot(**args, cut=0)
         annot = Annotator(ax, pairs, **args)
         annot.set_custom_annotations(pvals)
         annot.annotate()
@@ -76,8 +76,8 @@ if __name__ == '__main__':
         fig, axes = plt.subplots(figsize=(20,10))
         sns.set(font_scale = 1.2)
         sns.set_style("white")
-        ax = sns.boxplot(**args)
-        # ax = sns.violinplot(**args, cut=0)
+        # ax = sns.boxplot(**args)
+        ax = sns.violinplot(**args, cut=0)
         
         text = "$X$: non-significant"
         txt=plt.text(.885, .7, text, ha='left', va='top', transform=plt.gcf().transFigure, fontsize=22, bbox=dict(boxstyle='square', fc='0.9', ec='0.9'))
@@ -96,7 +96,6 @@ if __name__ == '__main__':
         plt.xlabel('radius', fontsize=25, labelpad=20)
         plt.ylabel(f'{heterogeneity_measure} score', fontsize=25, labelpad=20)
         plt.title(f'Local {heterogeneity_measure} (all celltypes)', fontsize=25, pad=20)
-        plt.savefig(f'all_celltypes_{heterogeneity_measure}_with_varying_radius.jpg', format='jpg', bbox_inches='tight')
             
         plt.legend(title='Condition', bbox_to_anchor=(1.05, 1), loc='upper left', borderaxespad=0)
         plt.setp(ax.get_legend().get_texts(), fontsize='25') # for legend text
@@ -108,6 +107,7 @@ if __name__ == '__main__':
         for j in ax.get_yticks():
             xticks.append(round(j,1))
         ax.set_yticklabels(xticks, size = 20)
+        plt.savefig(f'all_celltypes_{heterogeneity_measure}_with_varying_radius.jpg', format='jpg', bbox_inches='tight')
         fig.tight_layout()
         plt.show()
         
