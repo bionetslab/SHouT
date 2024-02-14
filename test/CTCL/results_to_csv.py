@@ -27,7 +27,7 @@ if __name__ == '__main__':
     for filename in os.listdir('results'):
         filename = os.fsdecode(filename)
         if filename.endswith('.h5ad'):
-            adata = sc.read_h5ad(filename)
+            adata = sc.read_h5ad('results/'+filename)
             sample_id = filename.split('.')[0]
             patient_id = adata.uns['patient_id'][0]
             condition = adata.uns['Group'][0]

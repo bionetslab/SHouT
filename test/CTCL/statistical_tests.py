@@ -59,10 +59,10 @@ if __name__ == '__main__':
             p_values_global['p_value'].append(p_value)
             p_values_global['p_value_adj'].append(p_value * 3)
             for cell_type in cell_types:
-                results_condition_1 = results_condition_1[results_condition_1.cell_type == cell_type]
-                results_condition_2 = results_condition_2[results_condition_2.cell_type == cell_type]
-                scores_1 = results_condition_1[score]
-                scores_2 = results_condition_2[score]
+                results_condition_1_celltype = results_condition_1[results_condition_1.cell_type == cell_type]
+                results_condition_2_celltype = results_condition_2[results_condition_2.cell_type == cell_type]
+                scores_1 = results_condition_1_celltype[score]
+                scores_2 = results_condition_2_celltype[score]
                 statistic, p_value = stats.mannwhitneyu(x=scores_1, y=scores_2)
                 p_values_cell_type['condition_1'].append(condition_1)
                 p_values_cell_type['condition_2'].append(condition_2)
@@ -74,4 +74,4 @@ if __name__ == '__main__':
     p_values_global = pd.DataFrame(data=p_values_global)
     p_values_cell_type = pd.DataFrame(data=p_values_cell_type)
     p_values_global.to_csv(os.path.join('results', 'p_values_global.csv'))
-    p_values_global.to_csv(os.path.join('results', 'p_values_cell_type.csv'))
+    p_values_cell_type.to_csv(os.path.join('results', 'p_values_cell_type.csv'))
