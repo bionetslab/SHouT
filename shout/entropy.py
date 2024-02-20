@@ -30,7 +30,7 @@ def global_entropy(adata, cluster_key, normalize=True, num_cell_types=None, copy
     adata.uns['global_entropy'] = entropy(cell_type_frequencies, base=2) / normalization_constant
 
 
-def local_entropy(adata, cluster_key, radius, normalize=True, num_cell_types=None, coord_type='generic', copy=False,
+def local_entropy(adata, cluster_key, radius, normalize=True, num_cell_types=None, copy=False,
                   shortest_path_distances=None, extended_neighborhoods=None):
     """
 
@@ -40,7 +40,6 @@ def local_entropy(adata, cluster_key, radius, normalize=True, num_cell_types=Non
     cluster_key :
     radius :
     normalize :
-    coord_type :
     copy :
     shortest_path_distances :
     extended_neighborhoods :
@@ -50,7 +49,7 @@ def local_entropy(adata, cluster_key, radius, normalize=True, num_cell_types=Non
 
     """
     if shortest_path_distances is None:
-        adj_matrix = get_spatial_graph(adata, coord_type)
+        adj_matrix = get_spatial_graph(adata)
         shortest_path_distances = shortest_path(adj_matrix)
     if extended_neighborhoods is None:
         extended_neighborhoods = get_extended_neighborhoods(shortest_path_distances, radius)

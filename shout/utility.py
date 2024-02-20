@@ -2,22 +2,20 @@ from squidpy.gr import spatial_neighbors
 from scipy.sparse.csgraph import shortest_path
 
 
-def get_spatial_graph(adata, coord_type='generic'):
+def get_spatial_graph(adata):
     """Computes spatial graph using Delaunay triangulation and shortest path distances within this graph.
 
     Parameters
     ----------
     adata : anndata.AnnData
         Annotated data object containing spatial omics data with spatial coordinates stored in `adata`.obsm['spatial'].
-    coord_type : str
-        Type of coordinate system. Valid options are 'generic' and 'generic'..
 
     Returns
     -------
     adj_matrix : scipy.sparse.csr_matrix
         Binary adjacency matrix of spatial graph.
     """
-    adj_matrix, _ = spatial_neighbors(adata, delaunay=True, coord_type=coord_type, copy=True)
+    adj_matrix, _ = spatial_neighbors(adata, delaunay=True, coord_type='generic', copy=True)
     return adj_matrix
 
 
