@@ -4,15 +4,28 @@ from scipy.sparse.csgraph import shortest_path
 
 
 def global_homophily(adata, cluster_key, copy=False, adj_matrix=None, adj_matrix_homophilic=None):
-    """
+    """ Global homophily is a score that
 
     Parameters
     ----------
-    adata :
-    cluster_key :
-    copy :
-    adj_matrix :
-    adj_matrix_homophilic :
+    adata : anndata.AnnData (Mandatory parameter)
+        Annotated data object containing spatial omics data with spatial coordinates stored in `adata`.obsm['spatial'].
+        For more info, go to https://anndata.readthedocs.io/en/latest/.
+    
+    cluster_key : str (Mandatory parameter)
+        adata.obs[cluster_key] contains key where clustering/ cell type annotations are stored.
+    
+    copy : bool (Optional parameter | default False)
+        $copy = True$ returns all scores as a dict, $copy = False$ saves all scores as part of the input anndata object "adata".
+    
+    adj_matrix : scipy.sparse.csr_matrix (Optional parameter | condition <symmetrical matrix of 0s and 1s, with zero diagonal> | default None)
+        Binary adjacency matrix of spatial graph.
+        symmetrical matrix where 1 represents an edge between cells, and 0 represents no edge between points.
+        If $adj_matrix = None$, adjacency matrix is obtained upon generation of spatial neighbor graph with Delaunay triangulation using ``squidpy.gr.spatial_neighbors()``.
+    
+    adj_matrix_homophilic : scipy.sparse.csr_matrix (Optional parameter | condition <symmetrical matrix of 0s and 1s, with zero diagonal> | default None)
+        Adjacency matrix retaining only homophilic edges, that is edges where both nodes are of the same cell type (or cluster).
+        If $adj_matrix_homophilic = None$, adj_matrix_homophilic is obtained upon generation of spatial neighbor graph with Delaunay triangulation using ``squidpy.gr.spatial_neighbors()``.
 
     Returns
     -------
@@ -29,21 +42,48 @@ def global_homophily(adata, cluster_key, copy=False, adj_matrix=None, adj_matrix
 
 def local_homophily(adata, cluster_key, radius, copy=False, adj_matrix=None,
                     adj_matrix_homophilic=None, shortest_path_distances=None, extended_neighborhoods=None):
-    """
+    """ Local homophily is a score which measures the heterogeneity of nodes in a network by rewarding nodes of the same cell type forming an edge, and penalizing nodes of different classes forming an edge.
+        In other words, when dissimilar nodes cluster together, we get a higher value of homophily.
 
     Parameters
     ----------
-    adata (Mandatory parameter | type <AnnData>) - Annotated data object containing spatial information. For more info, go to https://anndata.readthedocs.io/en/latest/.
-    cluster_key (Mandatory parameter | type <str>) - adata.obs[cluster_key] contains key where clustering/ cell type annotations are stored.
-    radius (Mandatory parameter | type <int> or <float>) - n-hop neighbor over which local homophily scores are to be calculated.
-    copy (Optional parameter | type <bool> | default False) - $copy = True$ returns all scores as a dict, $copy = False$ saves all scores as part of the input anndata object "adata".
-    adj_matrix (Optional parameter | type <symmetrical matrix of 0s and 1s, with zero diagonal> | default None) - symmetrical matrix where 1 represents an edge between cells, and 0 represents no edge between points. If $adj_matrix = None$, adjacency matrix is obtained upon generation of spatial neighbor graph with Delaunay triangulation.
-    adj_matrix_homophilic (Optional parameter | type <symmetrical matrix of 0s and 1s, with zero diagonal> | default None) - Adjacency matrix retaining only homophilic edges, that is edges where both nodes are of the same cell type (or cluster). If None, adj_matrix_homophilic is obtained upon generation of spatial neighbor graph with Delaunay triangulation.
-    shortest_path_distances (Optional parameter | type <symmetrical matrix with zero diagonal> | default None) - If None, shortest_path_distances is obtained upon generation of spatial neighbor graph with Delaunay triangulation.
-    extended_neighborhoods (Optional parameter | type <dict[int, list[int]]> | default None) - A dictionary with a key for each cell, and value being the list of neighbors within less than "radius" distance of the cell. If None, extended_neighborhoods is obtained upon generation of spatial neighbors graph with Delaunay triangulation.
+    adata : anndata.AnnData (Mandatory parameter)
+        Annotated data object containing spatial omics data with spatial coordinates stored in `adata`.obsm['spatial'].
+        For more info, go to https://anndata.readthedocs.io/en/latest/.
+    
+    cluster_key : str (Mandatory parameter)
+        adata.obs[cluster_key] contains key where clustering/ cell type annotations are stored.
+    
+    radius : int/ float (Mandatory parameter)
+        n-hop neighbor over which local homophily scores are to be calculated.
 
+    copy : bool (Optional parameter | default False)
+        $copy = True$ returns all scores as a dict, $copy = False$ saves all scores as part of the input anndata object "adata".
+    
+    adj_matrix : scipy.sparse.csr_matrix (Optional parameter | condition <symmetrical matrix of 0s and 1s, with zero diagonal> | default None)
+        Binary adjacency matrix of spatial graph.
+        symmetrical matrix where 1 represents an edge between cells, and 0 represents no edge between points.
+        If $adj_matrix = None$, adjacency matrix is obtained upon generation of spatial neighbor graph with Delaunay triangulation using ``squidpy.gr.spatial_neighbors()``.
+    
+    adj_matrix_homophilic : scipy.sparse.csr_matrix (Optional parameter | condition <symmetrical matrix of 0s and 1s, with zero diagonal> | default None)
+        Adjacency matrix retaining only homophilic edges, that is edges where both nodes are of the same cell type (or cluster).
+        If $adj_matrix_homophilic = None$, adj_matrix_homophilic is obtained upon generation of spatial neighbor graph with Delaunay triangulation using ``squidpy.gr.spatial_neighbors()``.
+    
+    shortest_path_distances : scipy.sparse.csr_matrix (Optional parameter | condition <symmetrical matrix with zero diagonal> | default None)
+        Shortest path distances between all pairs of cells as computed by ``.utility.get_spatial_graph()``.
+        If $shortest_path_distances = None$, shortest_path_distances is obtained upon generation of spatial neighbor graph with Delaunay triangulation using ``squidpy.gr.spatial_neighbors()``.
+    
+    extended_neighborhoods : dict[int, list[int]] (Optional parameter | default None)
+        A dictionary with a key for each cell in ``shortest_path_distances`` (index of corresponding row/column) and lists of indices of all cells whose shortest path distance from the key cell does not extend ``radius`` as values.
+        If $extended_neighborhoods = None$, extended_neighborhoods is obtained upon generation of spatial neighbors graph with Delaunay triangulation using ``squidpy.gr.spatial_neighbors()``.
+    
+    
+    
     Returns
     -------
+    f'local_homophily_{radius}' : list[float]  
+        Returns value if $copy = True$, saves to adata.obs[f'local_homophily_{radius}'] if $copy = True$.
+
 
     """
     if adj_matrix is None:
@@ -69,16 +109,29 @@ def local_homophily(adata, cluster_key, radius, copy=False, adj_matrix=None,
 
 
 def get_homophilic_edges(adata, cluster_key, adj_matrix):
-    """
+    """ This function returns a homophilic adjacency matrix, i.e., an adjacency matrix that retains edges where both of the nodes belong to the same set.
 
     Parameters
     ----------
-    adata :
-    cluster_key :
-    adj_matrix :
+    adata : anndata.AnnData (Mandatory parameter)
+        Annotated data object containing spatial omics data with spatial coordinates stored in `adata`.obsm['spatial'].
+        For more info, go to https://anndata.readthedocs.io/en/latest/.
+    
+    cluster_key : str (Mandatory parameter)
+        adata.obs[cluster_key] contains key where clustering/ cell type annotations are stored.
+    
+    adj_matrix : scipy.sparse.csr_matrix (Optional parameter | condition <symmetrical matrix of 0s and 1s, with zero diagonal> | default None)
+        Binary adjacency matrix of spatial graph.
+        symmetrical matrix where 1 represents an edge between cells, and 0 represents no edge between points.
+        If $adj_matrix = None$, adjacency matrix is obtained upon generation of spatial neighbor graph with Delaunay triangulation using ``squidpy.gr.spatial_neighbors()``.
+    
 
     Returns
     -------
+    adj_matrix_homophilic : scipy.sparse.csr_matrix (Optional parameter | condition <symmetrical matrix of 0s and 1s, with zero diagonal> | default None)
+        Adjacency matrix retaining only homophilic edges, that is edges where both nodes are of the same cell type (or cluster).
+        If $adj_matrix_homophilic = None$, adj_matrix_homophilic is obtained upon generation of spatial neighbor graph with Delaunay triangulation using ``squidpy.gr.spatial_neighbors()``.
+    
 
     """
     adj_matrix_homophilic = adj_matrix.copy()
