@@ -4,7 +4,7 @@ from scipy.sparse.csgraph import shortest_path
 
 
 def global_homophily(adata, cluster_key, copy=False, adj_matrix=None, adj_matrix_homophilic=None):
-    """ Global homophily is a score that
+    """ Global homophily is a score that measures the heterogeneity of a network by computing the ratio of the number of edges between nodes of the same type, and the total number of edges in the network.
 
     Parameters
     ----------
@@ -29,6 +29,8 @@ def global_homophily(adata, cluster_key, copy=False, adj_matrix=None, adj_matrix
 
     Returns
     -------
+    global_homophily : list[float]  
+        Returns value if $copy = True$, saves to adata.obs[f'local_homophily_{radius}'] if $copy = False$.
 
     """
     if adj_matrix is None:
@@ -42,7 +44,8 @@ def global_homophily(adata, cluster_key, copy=False, adj_matrix=None, adj_matrix
 
 def local_homophily(adata, cluster_key, radius, copy=False, adj_matrix=None,
                     adj_matrix_homophilic=None, shortest_path_distances=None, extended_neighborhoods=None):
-    """ Local homophily is a score which measures the heterogeneity of nodes in a network by rewarding nodes of the same cell type forming an edge, and penalizing nodes of different classes forming an edge.
+    """ Local homophily is the ratio of the number of nodes of the same class/ cell type forming an edge, and the number nodes of different classes/ cell types forming an edge, within the vicinity of input parameter "radius".
+        Local homophily quantifies heterogeneity by rewarding homogeneous edges and penalizing heterogeneous edges.
         In other words, when dissimilar nodes cluster together, we get a higher value of homophily.
 
     Parameters
@@ -54,7 +57,7 @@ def local_homophily(adata, cluster_key, radius, copy=False, adj_matrix=None,
     cluster_key : str (Mandatory parameter)
         adata.obs[cluster_key] contains key where clustering/ cell type annotations are stored.
     
-    radius : int/ float (Mandatory parameter)
+    radius : int (Mandatory parameter)
         n-hop neighbor over which local homophily scores are to be calculated.
 
     copy : bool (Optional parameter | default False)
@@ -77,13 +80,10 @@ def local_homophily(adata, cluster_key, radius, copy=False, adj_matrix=None,
         A dictionary with a key for each cell in ``shortest_path_distances`` (index of corresponding row/column) and lists of indices of all cells whose shortest path distance from the key cell does not extend ``radius`` as values.
         If $extended_neighborhoods = None$, extended_neighborhoods is obtained upon generation of spatial neighbors graph with Delaunay triangulation using ``squidpy.gr.spatial_neighbors()``.
     
-    
-    
     Returns
     -------
     f'local_homophily_{radius}' : list[float]  
-        Returns value if $copy = True$, saves to adata.obs[f'local_homophily_{radius}'] if $copy = True$.
-
+        Returns value if $copy = True$, saves to adata.obs[f'local_homophily_{radius}'] if $copy = False$.
 
     """
     if adj_matrix is None:
@@ -125,14 +125,12 @@ def get_homophilic_edges(adata, cluster_key, adj_matrix):
         symmetrical matrix where 1 represents an edge between cells, and 0 represents no edge between points.
         If $adj_matrix = None$, adjacency matrix is obtained upon generation of spatial neighbor graph with Delaunay triangulation using ``squidpy.gr.spatial_neighbors()``.
     
-
     Returns
     -------
     adj_matrix_homophilic : scipy.sparse.csr_matrix (Optional parameter | condition <symmetrical matrix of 0s and 1s, with zero diagonal> | default None)
         Adjacency matrix retaining only homophilic edges, that is edges where both nodes are of the same cell type (or cluster).
         If $adj_matrix_homophilic = None$, adj_matrix_homophilic is obtained upon generation of spatial neighbor graph with Delaunay triangulation using ``squidpy.gr.spatial_neighbors()``.
     
-
     """
     adj_matrix_homophilic = adj_matrix.copy()
     support_adj_matrix = adj_matrix.nonzero()

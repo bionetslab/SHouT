@@ -10,15 +10,29 @@ def all_scores(adata, cluster_key, radii, normalize=True, num_cell_types=None, c
 
     Parameters
     ----------
-    adata (Mandatory parameter | type <AnnData>) - Annotated data object containing spatial information. For more info, go to https://anndata.readthedocs.io/en/latest/.
-    cluster_key (Mandatory parameter | type <str>) - adata.obs[cluster_key] contains key where clustering/ cell type annotations are stored.
-    radii (Mandatory parameter | type <list of integers> or <list of floating point values>) - List of n-hop neighbors over which local heterogeneity scores are to be calculated.
-    normalize (Optional parameter | type <bool> | default True) - If True, normalize by number of cell types in adata.obs[cluster_key] when calculating entropy scores.
-    num_cell_types (Optional parameter | type <int> | default None) - If None, num_cell_types is the number of cell types present in adata.obs[cluster_key].
-    copy (Optional parameter | type <bool> | default False) - $copy = True$ returns all scores as a dict, $copy = False$ saves all scores as part of the input anndata object "adata".
-
+    adata : anndata.AnnData (Mandatory parameter)
+        Annotated data object containing spatial omics data with spatial coordinates stored in `adata`.obsm['spatial'].
+        For more info, go to https://anndata.readthedocs.io/en/latest/.
+    
+    cluster_key : str (Mandatory parameter)
+        adata.obs[cluster_key] contains key where clustering/ cell type annotations are stored.
+    
+    radii : list[int] (Mandatory parameter)
+        List of n-hop neighbors over which local heterogeneity scores are to be calculated.
+    
+    normalize : bool (Optional parameter | default True)
+        If $normalize = True$, normalize by number of cell types in adata.obs[cluster_key] when calculating entropy scores.
+    
+    num_cell_types : int (Optional parameter | default None)
+        If $num_cell_types=None$, num_cell_types is the number of cell types present in adata.obs[cluster_key].
+    
+    copy : bool (Optional parameter | default False)
+        $copy = True$ returns all scores as a dict, $copy = False$ saves all scores as part of the input anndata object "adata".
+    
     Returns
     -------
+    scores : dict [str, float/list[float]]
+        Returns value if $copy = True$, saves to input anndata object "adata" if $copy = False$.
 
     """
     adj_matrix = get_spatial_graph(adata)
