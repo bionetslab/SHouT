@@ -15,7 +15,6 @@ Shannon's entropy is defined by the formula:
 $$ E_{shannon} = \dfrac{\sum\limits_{k=1}^{K}(n_{c_k})}{N} log_{e} \dfrac{\sum\limits_{k=1}^{K}(n_{c_k})}{N} $$
 
 
-
 where, $k=[1, K]$ are the cluster numbers corresponding to clusters $$[c_1, c_K]$$,
 $n_{c_k}$ is the number of nodes present in cluster $c_k$,
 $N$: total no. of nodes in neighborhood
