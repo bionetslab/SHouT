@@ -18,9 +18,9 @@ $$\left( \sum_{k=1}^n a_k b_k \right)^2 \leq \left( \sum_{k=1}^n a_k^2 \right) \
 
 $$E_{shannon}= -   {{\sum_{k=1}^n a_k^2}}{N}log_e\frac{{\sum_{k=1}^K n_{c_k}}}{N}  $$
 
-$$ E_{shannon}= - \dfrac{\sum\limits_{k=1}^{K}(n_{c_k})}{N} {log}_{e} \dfrac{\sum\limits_{k=1}^{K}(n_{c_k})}{}  $$
+$$E_{shannon}=-\zeta{log}_{e}\zeta$$, where $\zeta=\dfrac{\sum\limits_{k=1}^{K}(n_{c_k})}{N}$
 
-
+- \dfrac{\sum\limits_{k=1}^{K}(n_{c_k})}{N}
 
 
 #### a. Local entropy
