@@ -3,9 +3,19 @@
 # SHouT
 The source code for SHouT (Spatial Heterogeneity quantification Tool). It generates local and global heterogeneity scores on spatial data with clusters and/ or annotations.
 
-## Tutorial
-### I. Clustering
-#### i. Perform hierarchical clustering
+## Heterogeneity scores
+### I. Entropy
+
+Shannon's entropy 
+
+
+
+#### a. Local entropy
+
+
+
+
+
 - Agglomerative clustering performed using the [schist nested model](https://schist.readthedocs.io/en/latest/clustering_pbmc.html#clustering-pbmc).
 - The schist nested model achieves a more fine-grained clustering as compared to Leiden or schist planted model, achieved over several clustering levels--thereby giving the user higher control over cluster analyses, and how many clusters to stop the clustering algorithm at.
 ###### Running the clustering algorithm:
@@ -37,7 +47,7 @@ The outputs are:
 ![dotplot_____PatientID-1_____ClusteringLevel-2](readme-images/dotplot_____PatientID-1_____ClusteringLevel-2.png)
 
 
-#### ii. Protein importance:
+#### b. Global entropy:
 - In this section, we compute and visualize importances of essential proteins that drive clustering results.
 
 ###### Running the protein importance computation:
