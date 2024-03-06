@@ -10,19 +10,9 @@ For cutaneous T-cell lymphoma (CTCL) case study, go to .
 ## Heterogeneity scores
 ### I. Entropy
 
-Shannon's entropy is given by the formula:
-$E_{shannon}=$
+Shannon's entropy is defined by the formula:
 
-$$\left( \sum_{k=1}^n a_k b_k \right)^2 \leq \left( \sum_{k=1}^n a_k^2 \right) \left( \sum_{k=1}^n b_k^2 \right)$$
-
-
-$$E_{shannon}= -   {{\sum_{k=1}^n a_k^2}}{N}log_e\frac{{\sum_{k=1}^K n_{c_k}}}{N}  $$
-
-$$E_{shannon}=-\zeta{log}_{e}\zeta$$\\
-where $\zeta=\dfrac{\sum\limits_{k=1}^{K}(n_{c_k})}{N}$
-
-$$x=\frac{\sum\limits^{N}_{i=1}i}{\sum\limits^{N}_{j=1}j}$$
-
+$$ E = 1 - \dfrac{\sum\limits_{i=1}^{n}(O_{i}-P_{i})^{2}}{\sum\limits_{i=1}^{n}(O_{i}-\bar{O})^{2}} $$
 
 #### a. Local entropy
 
