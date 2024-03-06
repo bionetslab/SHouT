@@ -14,12 +14,21 @@ Shannon's entropy is defined by the formula:
 
 $$ E_{shannon} = \dfrac{\sum\limits_{k=1}^{K}(n_{c_k})}{N} log_{e} \dfrac{\sum\limits_{k=1}^{K}(n_{c_k})}{N} $$
 
-where, $k=[1, K]$ are the cluster numbers corresponding to clusters $$[c_1, c_K]$$,
+where, $k=[1, K]$ are the cluster numbers corresponding to clusters $[c_1, c_K]$
 $n_{c_k}$ is the number of nodes present in cluster $c_k$,
-$N$: total no. of nodes in neighborhood
+$N$: total no. of nodes in neighborhood (in case of global entropy score generation, the entire network)
 
 
 #### a. Local entropy
+
+In case of local entropy, SHout accepts as input a radius (or a set of radii), such that:
+
+$$ E_{shannon} = \dfrac{\sum\limits_{k=1}^{K}(n_{c_k})}{N} log_{e} \dfrac{\sum\limits_{k=1}^{K}(n_{c_k})}{N} $$
+
+where, $k=[1, K]$ are the cluster numbers corresponding to clusters $[c_1, c_K]$ present in all nodes within shortest distance <= radius $r$ from the current node
+$n_{c_k}$ is the number of nodes present in cluster $c_k$,
+$N$: total no. of nodes in neighborhood (all nodes within shortest distance of <= $r$ from the current node)
+
 
 
 
