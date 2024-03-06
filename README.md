@@ -21,7 +21,7 @@ $n_{c_k}$ is the number of nodes present in cluster $c_k$
 $N$: total no. of nodes in neighborhood (in case of global entropy score generation, the entire network)
 
 
-#### a. Local entropy
+#### a. Local entropy score per node
 
 In case of local entropy, SHout accepts as input a radius (or a set of radii), such that:
 
@@ -32,6 +32,25 @@ where, $k=[1, K]$ are the cluster numbers corresponding to clusters $[c_1, c_K]$
 $n_{c_k}$ is the number of nodes present in cluster $c_k$
 
 $N$: total no. of nodes in neighborhood (all nodes within shortest distance of $\leq$ $r$ from the current node)
+
+**_NOTE:_**  We get one score in the range of [0, 1] per node in the network.
+
+
+#### b. Global entropy score per network
+
+In case of local entropy, SHout accepts as input a radius (or a set of radii), such that:
+
+$$ E_{shannon} = \dfrac{\sum\limits_{k=1}^{K}(n_{c_k})}{N} log_{e} \dfrac{\sum\limits_{k=1}^{K}(n_{c_k})}{N} $$
+
+where, $k=[1, K]$ are the cluster numbers corresponding to clusters $[c_1, c_K]$ present in all nodes in the network
+
+$n_{c_k}$ is the number of nodes present in cluster $c_k$
+
+$N$: total no. of nodes in the network
+
+**_NOTE:_**  We get one score in the range of [0, 1] for the entire network.
+
+
 
 
 
