@@ -12,7 +12,7 @@ For cutaneous T-cell lymphoma (CTCL) case study, go to .
 
 Shannon's entropy is defined by the formula:
 
-$$ E = 1 - \dfrac{\sum\limits_{i=1}^{n}(O_{i}-P_{i})^{2}}{\sum\limits_{i=1}^{n}(O_{i}-\bar{O})^{2}}  \dfrac{\sum\limits_{i=1}^{n}(O_{i}-P_{i})^{2}}{\sum\limits_{i=1}^{n}(O_{i}-\bar{O})^{2}} $$
+$$ E = 1 - \dfrac{\sum\limits_{i=1}^{n}(O_{i}-P_{i})^{2}}{\sum\limits_{i=1}^{n}(O_{i}-\bar{O})^{2}} {log}_{e} \dfrac{\sum\limits_{i=1}^{n}(O_{i}-P_{i})^{2}}{\sum\limits_{i=1}^{n}(O_{i}-\bar{O})^{2}} $$
 
 #### a. Local entropy
 
