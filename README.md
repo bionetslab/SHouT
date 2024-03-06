@@ -12,7 +12,7 @@ For cutaneous T-cell lymphoma (CTCL) case study, go to .
 
 Shannon's entropy is defined by the formula:
 
-$$ E_{shannon} = \dfrac{\sum\limits_{k=1}^{K}(n_{c_k})}{N} log_{e} \dfrac{\sum\limits_{k=1}^{K}(n_{c_k})}{N} $$\\
+$$ E_{shannon} = \dfrac{\sum\limits_{k=1}^{K}(n_{c_k})}{N} log_{e} \dfrac{\sum\limits_{k=1}^{K}(n_{c_k})}{N} $$
 
 
 
