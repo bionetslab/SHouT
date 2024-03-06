@@ -18,7 +18,7 @@ $$\left( \sum_{k=1}^n a_k b_k \right)^2 \leq \left( \sum_{k=1}^n a_k^2 \right) \
 
 $$E_{shannon}= -   {{\sum_{k=1}^n a_k^2}}{N}log_e\frac{{\sum_{k=1}^K n_{c_k}}}{N}  $$
 
-$$ E = 1 - \dfrac{\sum\limits_{i=1}^{n}(O_{i}-P_{i})^{2}}{\sum\limits_{i=1}^{n}(O_{i}-\bar{O})^{2}} $$
+$$ E_{shannon}= - \dfrac{\sum\limits_{k=1}^{K}(n_{c_k})}{\sum\limits_{i=1}^{n}(O_{i}-\bar{O})^{2}} $$
 
 \end{document}
 
