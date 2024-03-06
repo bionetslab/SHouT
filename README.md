@@ -3,10 +3,17 @@
 # SHouT
 The source code for SHouT (Spatial Heterogeneity quantification Tool). It generates local and global heterogeneity scores on spatial data with clusters and/ or annotations.
 
+For tutorial, go to .
+
+For cutaneous T-cell lymphoma (CTCL) case study, go to .
+
 ## Heterogeneity scores
 ### I. Entropy
 
-Shannon's entropy 
+Shannon's entropy is given by the formula:
+$E_{shannon}=$
+
+$$\left( \sum_{k=1}^n a_k b_k \right)^2 \leq \left( \sum_{k=1}^n a_k^2 \right) \left( \sum_{k=1}^n b_k^2 \right)$$
 
 
 
