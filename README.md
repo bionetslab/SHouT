@@ -4,7 +4,10 @@
 The source code for SHouT (**s**patial **h**eter**o**geneity q**u**antification **t**ool), which aids the analysis of spatial cell graphs with respect to spatial heterogeneity.
 
 
-SHouT provides two sample-level scores, namely (1) global homophily (edge-based), and (2) global entropy (node-based). Additionally, SHouT provides three node- (here, cell-) level scores, namely (1) local entropy (node-based), (2) local homophily (edge-based), and (3) local egophily (node-based).
+SHouT provides two sample-level scores, namely (1) global homophily (edge-based), and (2) global entropy (node-based).
+
+
+Additionally, SHouT provides three node- (here, cell-) level scores, namely (1) local entropy (node-based), (2) local homophily (edge-based), and (3) local egophily (node-based).
 
 
 
