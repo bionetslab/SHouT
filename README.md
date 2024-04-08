@@ -1,7 +1,15 @@
 ![scAnalyzer](/SHouT.jpeg)
 
 # SHouT
-The source code for SHouT (Spatial Heterogeneity quantification Tool). It generates local and global heterogeneity scores on spatial data with clusters and/ or annotations.
+The source code for SHouT (**s**patial **h**eter**o**geneity q**u**antification **t**ool). It aids the analysis of spatial cell graphs with respect to spatial heterogeneity.
+
+
+SHouT presents two sample-level scores, namely (1) global homophily
+
+
+
+
+
 
 For tutorial, go to .
 
