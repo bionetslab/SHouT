@@ -23,7 +23,11 @@ For cutaneous T-cell lymphoma (CTCL) case study, go to .
 
 #### a. Global entropy
 
-Global entropy--which is a measure of randomness of the network $G$={ $N$, $E$ }, where $N$ is the set of all nodes, and $E$ is the set of all edges--is formally defined as:
+Global entropy--which is a measure of randomness of the network $G$ = { $N$, $E$ }, where $N$ is the set of all nodes, and $E$ is the set of all edges--is formally defined as:
+
+\begin{equation}
+\eta=-\sum_{c \in N} {\frac{n(c)}{N}log(\frac{n(c)}{N}})
+\end{equation}
 
 $$ E_{shannon} = \dfrac{\sum\limits_{k=1}^{K}(n_{c_k})}{N} log_{e} \dfrac{\sum\limits_{k=1}^{K}(n_{c_k})}{N} $$
 
