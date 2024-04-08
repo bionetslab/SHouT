@@ -27,6 +27,8 @@ Global entropy--which is a measure of randomness of the network $G$ = { $N$, $E$
 
 $$ \eta=-\sum_{c \in N} {\frac{n(c)}{N}log(\frac{n(c)}{N}}) $$
 
+where $c$ is a cell type present in at least one node in $N$; $n(c)$ is the number of cells in $N$ of cell type $c$; and $|N|$ is the total number of nodes present in the network $G$.
+
 $$ E_{shannon} = \dfrac{\sum\limits_{k=1}^{K}(n_{c_k})}{N} log_{e} \dfrac{\sum\limits_{k=1}^{K}(n_{c_k})}{N} $$
 
 where, $k=[1, K]$ are the cluster numbers corresponding to clusters $[c_1, c_K]$ present in all nodes within shortest distance $\leq$ radius $r$ from the current node
