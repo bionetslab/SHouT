@@ -1,12 +1,10 @@
 ![scAnalyzer](/SHouT.jpeg)
 
 # SHouT
-The source code for SHouT (**s**patial **h**eter**o**geneity q**u**antification **t**ool).
-
-It aids the analysis of spatial cell graphs with respect to spatial heterogeneity.
+The source code for SHouT (**s**patial **h**eter**o**geneity q**u**antification **t**ool), which aids the analysis of spatial cell graphs with respect to spatial heterogeneity.
 
 
-SHouT presents two sample-level scores, namely (1) global homophily
+SHouT presents two sample-level scores, namely (1) global homophily -- , and (2) global entropy -- *node-based*
 
 
 
