@@ -19,22 +19,11 @@ For tutorial, go to .
 For cutaneous T-cell lymphoma (CTCL) case study, go to .
 
 ## Heterogeneity scores
-### I. Entropy
+### I. Global heterogeneity scores
 
-Shannon's entropy is defined by the formula:
+#### a. Global entropy
 
-$$ E_{shannon} = \dfrac{\sum\limits_{k=1}^{K}(n_{c_k})}{N} log_{e} \dfrac{\sum\limits_{k=1}^{K}(n_{c_k})}{N} $$
-
-where, $k=[1, K]$ are the cluster numbers corresponding to clusters $[c_1, c_K]$
-
-$n_{c_k}$ is the number of nodes present in cluster $c_k$
-
-$N$: total no. of nodes in neighborhood (in case of global entropy score generation, the entire network)
-
-
-#### a. Local entropy score per node
-
-In case of local entropy, SHout accepts as input a radius (or a set of radii), such that:
+Global entropy--which is a measure of randomness of the network $$G=\{N, E\}$$, where $$N$$ is the set of all nodes, and $E$ is the set of all edges--is formally defined as:
 
 $$ E_{shannon} = \dfrac{\sum\limits_{k=1}^{K}(n_{c_k})}{N} log_{e} \dfrac{\sum\limits_{k=1}^{K}(n_{c_k})}{N} $$
 
