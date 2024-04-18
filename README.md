@@ -10,7 +10,7 @@ SHouT provides two sample-level scores, namely (1) global homophily (edge-based)
 Additionally, SHouT provides three node- (here, cell-) level scores, namely (1) local entropy (node-based), (2) local homophily (edge-based), and (3) egophily (node-based).
 
 
-For tutorial, go to .
+For tutorial, go to https://github.com/bionetslab/SHouT/blob/main/tutorial.ipynb.
 
 For cutaneous T-cell lymphoma (CTCL) case study, go to .
 
@@ -74,6 +74,30 @@ Egophily is defined as:
 $$e_r(c)=p_{N_r(c)}(\lambda_V(c))\in[0,1]$$
 
 where, egophily $e_r(c)$ is the fraction of cells within the $r$-hop neighborhood of $c$ that have the same cell type as $c$.
+
+
+
+## Installation
+
+Install conda environment as follows (there also exists a requirements.txt)
+```bash
+conda create --name shout
+conda activate shout
+pip install scipy==1.10.1 numpy==1.23.5 squidpy==1.3.0
+```
+
+
+## Cutaneous T cell Lymphoma (CTCL) case study
+```bash
+[ctcl_case_study](https://github.com/bionetslab/ctcl_case_study)
+```
+
+
+
+
+
+
+
 
 
 
