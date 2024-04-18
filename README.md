@@ -88,9 +88,7 @@ pip install scipy==1.10.1 numpy==1.23.5 squidpy==1.3.0
 
 
 ## Cutaneous T cell Lymphoma (CTCL) case study
-```bash
 [ctcl_case_study](https://github.com/bionetslab/ctcl_case_study)
-```
 
 
 
