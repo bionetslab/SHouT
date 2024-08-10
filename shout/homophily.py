@@ -3,7 +3,7 @@ import numpy as np
 from scipy.sparse.csgraph import shortest_path
 
 
-def global_homophily(adata, cluster_key, copy=False, adj_matrix=None, adj_matrix_homophilic=None):
+def global_homophily(adata, cluster_key, copy=False, adj_matrix=None, adj_matrix_homophilic=None, graph_type='delaunay'):
     """ Global homophily is a score that measures the heterogeneity of a network by computing the ratio of the number of edges between nodes of the same type, and the total number of edges in the network.
 
     Parameters
@@ -34,16 +34,16 @@ def global_homophily(adata, cluster_key, copy=False, adj_matrix=None, adj_matrix
 
     """
     if adj_matrix is None:
-        adj_matrix, _ = get_spatial_graph(adata, compute_shortest_path_distances=False)
+        adj_matrix, _ = get_spatial_graph(adata, compute_shortest_path_distances=False, graph_type=graph_type)
     if adj_matrix_homophilic is None:
         adj_matrix_homophilic = get_homophilic_edges(adata, cluster_key, adj_matrix)
     if copy:
         return adj_matrix_homophilic.sum() / adj_matrix.sum()
-    adata.uns['global_homophily'] = adj_matrix_homophilic.sum() / adj_matrix.sum()
+    adata.uns[f'global_homophily_{graph_type}'] = adj_matrix_homophilic.sum() / adj_matrix.sum()
 
 
 def local_homophily(adata, cluster_key, radius, copy=False, adj_matrix=None,
-                    adj_matrix_homophilic=None, shortest_path_distances=None, extended_neighborhoods=None):
+                    adj_matrix_homophilic=None, shortest_path_distances=None, extended_neighborhoods=None, graph_type=graph_type):
     """ Local homophily is the ratio of the number of nodes of the same class/ cell type forming an edge, and the number nodes of different classes/ cell types forming an edge, within the vicinity of input parameter "radius".
         Local homophily quantifies heterogeneity by rewarding homogeneous edges and penalizing heterogeneous edges.
         In other words, when dissimilar nodes cluster together, we get a higher value of homophily.
@@ -87,7 +87,7 @@ def local_homophily(adata, cluster_key, radius, copy=False, adj_matrix=None,
 
     """
     if adj_matrix is None:
-        adj_matrix = get_spatial_graph(adata)
+        adj_matrix = get_spatial_graph(adata, graph_type='delaunay')
     if shortest_path_distances is None:
         shortest_path_distances = shortest_path(adj_matrix)
     if adj_matrix_homophilic is None:
@@ -105,7 +105,7 @@ def local_homophily(adata, cluster_key, radius, copy=False, adj_matrix=None,
             local_homophilies[cell] = sub_adj_matrix_homophilic.sum() / sum_of_degrees
     if copy:
         return local_homophilies
-    adata.obs[f'local_homophily_{radius}'] = local_homophilies
+    adata.obs[f'local_homophily_{radius}_{graph_type}'] = local_homophilies
 
 
 def get_homophilic_edges(adata, cluster_key, adj_matrix):

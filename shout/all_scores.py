@@ -5,7 +5,7 @@ from .utility import *
 from scipy.sparse.csgraph import shortest_path
 
 
-def all_scores(adata, cluster_key, radii, normalize=True, num_cell_types=None, copy=False):
+def all_scores(adata, cluster_key, radii, normalize=True, num_cell_types=None, copy=False, graph_types=['delaunay_graph', 'knn_graph', 'dist_thresh_graph']):
     """Saves as dict, or returns as part of input anndata object, all heterogeneity scores calculated using the SHouT package.
 
     Parameters
@@ -41,19 +41,20 @@ def all_scores(adata, cluster_key, radii, normalize=True, num_cell_types=None, c
     scores = dict()
     scores['global_entropy'] = global_entropy(adata, cluster_key, normalize=normalize, num_cell_types=num_cell_types, copy=copy)
     scores['global_homophily'] = global_homophily(adata, cluster_key, copy=copy,
-                                                  adj_matrix=adj_matrix, adj_matrix_homophilic=adj_matrix_homophilic)
+                                                  adj_matrix=adj_matrix, adj_matrix_homophilic=adj_matrix_homophilic, graph_type=graph_type)
     for radius in radii:
-        extended_neighborhoods = get_extended_neighborhoods(shortest_path_distances, radius)
-        scores[f'local_entropy_{radius}'] = local_entropy(adata, cluster_key, radius, normalize=normalize, num_cell_types=num_cell_types, 
-                                                          copy=copy, shortest_path_distances=shortest_path_distances,
-                                                          extended_neighborhoods=extended_neighborhoods)
-        scores[f'local_homophily_{radius}'] = local_homophily(adata, cluster_key, radius, copy=copy,
-                                                              adj_matrix=adj_matrix,
-                                                              adj_matrix_homophilic=adj_matrix_homophilic,
-                                                              shortest_path_distances=shortest_path_distances,
+        for graph_type in graph_types:
+            extended_neighborhoods = get_extended_neighborhoods(shortest_path_distances, radius)
+            scores[f'local_entropy_{radius}_{graph_type}'] = local_entropy(adata, cluster_key, radius, normalize=normalize, num_cell_types=num_cell_types, 
+                                                              copy=copy, shortest_path_distances=shortest_path_distances,
                                                               extended_neighborhoods=extended_neighborhoods)
-        scores[f'egophily_{radius}'] = egophily(adata, cluster_key, radius, copy=copy,
-                                                shortest_path_distances=shortest_path_distances,
-                                                extended_neighborhoods=extended_neighborhoods)
+            scores[f'local_homophily_{radius}_{graph_type}'] = local_homophily(adata, cluster_key, radius, copy=copy,
+                                                                  adj_matrix=adj_matrix,
+                                                                  adj_matrix_homophilic=adj_matrix_homophilic,
+                                                                  shortest_path_distances=shortest_path_distances,
+                                                                  extended_neighborhoods=extended_neighborhoods, graph_type=graph_type)
+            scores[f'egophily_{radius}_{graph_type}'] = egophily(adata, cluster_key, radius, copy=copy,
+                                                    shortest_path_distances=shortest_path_distances,
+                                                    extended_neighborhoods=extended_neighborhoods)
     if copy:
         return scores
