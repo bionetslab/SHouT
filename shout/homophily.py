@@ -43,7 +43,7 @@ def global_homophily(adata, cluster_key, copy=False, adj_matrix=None, adj_matrix
 
 
 def local_homophily(adata, cluster_key, radius, copy=False, adj_matrix=None,
-                    adj_matrix_homophilic=None, shortest_path_distances=None, extended_neighborhoods=None, graph_type=graph_type):
+                    adj_matrix_homophilic=None, shortest_path_distances=None, extended_neighborhoods=None, graph_type='delaunay'):
     """ Local homophily is the ratio of the number of nodes of the same class/ cell type forming an edge, and the number nodes of different classes/ cell types forming an edge, within the vicinity of input parameter "radius".
         Local homophily quantifies heterogeneity by rewarding homogeneous edges and penalizing heterogeneous edges.
         In other words, when dissimilar nodes cluster together, we get a higher value of homophily.
