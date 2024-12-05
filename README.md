@@ -93,8 +93,11 @@ The CTCL case study can be accessed at: [https://github.com/bionetslab/ctcl_case
 
 ## Citing the work
 
-Please cite the paper as follows:
-- Will be updated once available.
+Please cite SHouT as follows:
+
+- S. Sarkar, A. Möller, A. Hartebrodt, M. Erdmann, C. Ostalecki, A. Baur, D. B. Blumenthal (2024). Spatial cell graph analysis reveals skin tissue organization characteristic for cutaneous T cell lymphoma. NPJ Syst. Biol. Appl. 10, 143, https://doi.org/10.1038/s41540-024-00474-x.
+  
+
 
 
 
